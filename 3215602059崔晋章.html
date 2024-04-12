@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>My Map</title>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.29/"></script>
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    require([
+      "esri/config",
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/widgets/ScaleBar",
+      "esri/widgets/Legend",
+      "esri/widgets/Search",
+      "esri/widgets/BasemapGallery",
+      "esri/widgets/LayerList",
+      "esri/widgets/Expand",
+      "esri/layers/FeatureLayer",
+      "esri/widgets/Measurement",
+    ], function (esriConfig, Map, MapView, ScaleBar, Legend, Search, BasemapGallery, LayerList, Expand, FeatureLayer, Measurement) {
+
+      esriConfig.apiKey = "AAPK26c7ce22b8ab4fe0b92e7b156bfce96eh-35hVQmloNiaphiX_AnI2eTYQ3Xu788AC9rXVH8gEkD4lioc8wqm1NMfCSDfQFM";
+
+      const map = new Map({
+        basemap: "hybrid" // basemap styles service
+      });
+
+      const view = new MapView({
+        map: map,
+        center: [113.2644, 23.1291], // Longitude, latitude of Shenzhen
+        zoom: 12, // Zoom level
+        container: "map" // Div element
+      });
+
+      const scaleBar = new ScaleBar({
+        view: view
+      });
+
+      const legend = new Legend({
+        view: view
+      });
+
+      const search = new Search({
+        view: view
+      });
+
+      const basemapGallery = new BasemapGallery({
+        view: view
+      });
+
+      const layerList = new LayerList({
+        view: view
+      });
+
+      const featureLayer = new FeatureLayer({
+        url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/USA_Congressional_Districts/FeatureServer/0"
+      });
+
+
+      view.ui.move("zoom", "bottom-right");
+      view.ui.add(scaleBar, "bottom-right");
+      view.ui.add(search, "top-right");
+      view.ui.add(basemapGallery, "top-left");
+      view.ui.add(legend, "bottom-right"); // 添加图例
+
+      map.add(featureLayer);
+
+      let measurement = null;
+      let measurementExpand = null;
+
+      function addMeasurementWidget() {
+        if (measurement) {
+          view.ui.remove(measurementExpand);
+          measurement = null;
+          measurementExpand = null;
+        } else {
+          measurement = new Measurement({
+            view: view,
+            activeTool: "distance", // 默认测量工具为距离
+            container: document.createElement("div"),
+          });
+
+          measurementExpand = new Expand({
+            view: view,
+            content: measurement.container,
+            expandIconClass: "esri-icon-measure",
+            group: "top-right"
+          });
+
+          view.ui.add(measurementExpand, "top-right");
+        }
+      }
+
+      const measureButton = document.getElementById("measureButton");
+      measureButton.addEventListener("click", addMeasurementWidget);
+
+    });
+    const apiKey = "AAPK26c7ce22b8ab4fe0b92e7b156bfce96eh-35hVQmloNiaphiX_AnI2eTYQ3Xu788AC9rXVH8gEkD4lioc8wqm1NMfCSDfQFM";
+    const authentication = ApiKeyManager.fromKey(apiKey);
+
+    view.when(() => {
+      const text = "New Y";
+      suggest({ text, authentication: authentication }).then(response => {
+        console.log(response.suggestions);
+      });
+    });
+    
+
+  </script>
+
+</head>
+
+<body>
+  <div id="header"><strong>美丽广东欢迎您!</strong></div>
+  <div id="map"></div>
+  <div id="basemapGallery"></div>
+  <div id="widgets">
+    <div id="scalebar" class="esri-widget"></div>
+    <!-- <div id="legend" class="esri-widget"></div> -->
+    <div id="search" class="esri-widget"></div>
+    <button id="measureButton" class="gradient-button">测量工具</button>
+  </div>
+</body>
+
+</html>

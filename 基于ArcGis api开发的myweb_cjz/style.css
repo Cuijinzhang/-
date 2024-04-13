@@ -1,0 +1,85 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#header {
+  height: 50px;
+  background-color: #0079c1;
+  color: #fff;
+  text-align: center;
+  line-height: 50px;
+}
+
+#map {
+  float: left;
+  width: 100%;
+  height: calc(100% - 50px);
+}
+
+#basemapGallery {
+  top: 10px;
+  right: 0;
+  height: calc(100% - 50px);
+  z-index: 1;
+}
+
+
+#widgets {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 1;
+}
+
+#scalebar {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1;
+}
+
+#legend {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 1;
+}
+
+#layerlist {
+  display: none;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 1;
+}
+
+#layerlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  background-color: #0079c1;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+#layerlist-btn:hover {
+  background-color: #005fa3;
+}
+
+.gradient-button {
+  background-color: #0281cb;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.gradient-button:hover {
+  background-color: #004172;
+}

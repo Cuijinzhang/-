@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>My Map</title>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.29/"></script>
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+require([
+      "esri/config",
+      "esri/WebMap",
+      "esri/views/MapView",
+      "esri/widgets/ScaleBar",
+      "esri/widgets/Legend",
+      "esri/widgets/Search",
+      "esri/widgets/BasemapGallery",
+      "esri/widgets/LayerList",
+      "esri/widgets/Expand",
+      "esri/layers/FeatureLayer",
+      "esri/widgets/Measurement",
+    ], function (esriConfig, WebMap, MapView, ScaleBar, Legend, Search, BasemapGallery, LayerList, Expand, FeatureLayer, Measurement) {
+
+      esriConfig.apiKey = "AAPK26c7ce22b8ab4fe0b92e7b156bfce96eh-35hVQmloNiaphiX_AnI2eTYQ3Xu788AC9rXVH8gEkD4lioc8wqm1NMfCSDfQFM";
+
+      const webmap = new WebMap({
+        portalItem: {
+          id: "f2e9b762544945f390ca4ac3671cfa72"
+        }
+      });
+
+      const view = new MapView({
+        container: "map",
+        map: webmap
+      });
+
+      const scaleBar = new ScaleBar({
+        view: view
+      });
+
+      const legend = new Legend({
+        view: view
+      });
+
+      const search = new Search({
+        view: view
+      });
+
+      const basemapGallery = new BasemapGallery({
+        view: view
+      });
+
+      const layerList = new LayerList({
+        view: view
+      });
+
+
+      view.ui.move("zoom", "bottom-right");
+      view.ui.add(scaleBar, "bottom-left");
+      view.ui.add(search, "top-right");
+      view.ui.add(basemapGallery, "top-left");
+      view.ui.add(legend, "bottom-right"); // 添加图例
+      view.ui.add(layerList, "bottom-left");
+
+      let measurement = null;
+      let measurementExpand = null;
+
+      const measurementWidget = new Measurement({
+        view: view
+      });
+
+      const expand = new Expand({
+        view: view,
+        content: measurementWidget,
+        expandIconClass: "esri-icon-measure",
+        group: "top-right"
+      });
+      view.ui.add(expand, "top-right");
+
+
+      function addMeasurementWidget() {
+        measurement = measurementWidget.activeTool;
+        measurementExpand = expand;
+        measurementExpand.expand();
+      }
+      const measureButton = document.getElementById("measureButton");
+      measureButton.addEventListener("click", addMeasurementWidget);
+
+    });
+
+
+  </script>
+
+</head>
+
+<body>
+  <div id="header"><strong>欢迎！再也不用做这个作业了</strong></div>
+  <div id="map"></div>
+  <div id="basemapGallery"></div>
+  <button id="measureButton">Measure</button>
+
+  <div id="widgets">
+    <div id="scalebar" class="esri-widget"></div>
+    <!-- <div id="legend" class="esri-widget"></div> -->
+    <div id="search" class="esri-widget"></div>
+
+  </div>
+</body>
+
+</html>
